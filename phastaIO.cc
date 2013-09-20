@@ -91,7 +91,7 @@ namespace{
 	/***************** NEW PHASTA IO CODE STARTS HERE **********************/
 	/***********************************************************************/
 
-	typedef struct
+	struct phastaio_file_t
 	{
 		char filename[MAX_PHASTA_FILE_NAME_LENGTH];   /* defafults to 1024 */
 		unsigned long long my_offset;
@@ -128,9 +128,9 @@ namespace{
 		char * master_header;
 		MPI_File file_handle;
 		MPI_Comm local_comm;
-	} phastaio_file_t;
+	};
 
-	typedef struct
+	struct serial_file
 	{
 		unsigned long long my_offset;
 		unsigned long long **offset_table;
@@ -139,7 +139,7 @@ namespace{
 		int GPid;
 		int read_field_count;
 		char * masterHeader;
-	}serial_file;
+	};
 
 	serial_file *SerialFile;
 	phastaio_file_t *PhastaIOActiveFiles[MAX_PHASTA_FILES];
@@ -215,8 +215,8 @@ namespace{
 				free (ts1);
 				return sizeof( double );
 			} else {
-				free (ts1);
 				fprintf(stderr,"unknown type : %s\n",ts1);
+                free (ts1);
 				return 0;
 			}
 		}
