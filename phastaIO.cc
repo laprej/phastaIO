@@ -366,9 +366,9 @@ void printPerf(
 	}
 
 	if(data_size != -1) { // if data size provided, compute I/O rate and block size (Michel: why do we need block size?)
-		MPI_Allreduce(&data_size,&isizemin,1,MPI_LONG_LONG_INT,MPI_MIN,MPI_COMM_WORLD);
-		MPI_Allreduce(&data_size,&isizemax,1,MPI_LONG_LONG_INT,MPI_MAX,MPI_COMM_WORLD);
-		MPI_Allreduce(&data_size,&isizetot,1,MPI_LONG_LONG_INT,MPI_SUM,MPI_COMM_WORLD);
+		MPI_Allreduce(&data_size,&isizemin,1,MPI_UNSIGNED_LONG_LONG,MPI_MIN,MPI_COMM_WORLD);
+		MPI_Allreduce(&data_size,&isizemax,1,MPI_UNSIGNED_LONG_LONG,MPI_MAX,MPI_COMM_WORLD);
+		MPI_Allreduce(&data_size,&isizetot,1,MPI_UNSIGNED_LONG_LONG,MPI_SUM,MPI_COMM_WORLD);
 
 //		sizemin=(double)(isizemin/1024.0/1024.0);
 //		sizemax=(double)(isizemax/1024.0/1024.0);
@@ -917,10 +917,10 @@ void openfile_(const char filename[],
 
 					MPI_Scatter( header_table[j],
 							PhastaIOActiveFiles[i]->nppp,
-							MPI_LONG_LONG_INT,
+							MPI_UNSIGNED_LONG_LONG,
 							PhastaIOActiveFiles[i]->my_read_table[j],
 							PhastaIOActiveFiles[i]->nppp,
-							MPI_LONG_LONG_INT,
+							MPI_UNSIGNED_LONG_LONG,
 							0,
 							PhastaIOActiveFiles[i]->local_comm );
 
@@ -1075,10 +1075,10 @@ void closefile_( int* fileDescriptor,
 			for ( j = 0; j < PhastaIOActiveFiles[i]->nFields; j++ ) {
 				MPI_Gather( PhastaIOActiveFiles[i]->my_offset_table[j],
 						PhastaIOActiveFiles[i]->nppp,
-						MPI_LONG_LONG_INT,
+						MPI_UNSIGNED_LONG_LONG,
 						header_table[j],
 						PhastaIOActiveFiles[i]->nppp,
-						MPI_LONG_LONG_INT,
+						MPI_UNSIGNED_LONG_LONG,
 						0,
 						PhastaIOActiveFiles[i]->local_comm );
 			}
@@ -1519,7 +1519,7 @@ void writeheader_(  const int* fileDescriptor,
 		MPI_Scan( &number_of_items,
 				&offset_value,
 				1,
-				MPI_LONG_LONG_INT,
+				MPI_UNSIGNED_LONG_LONG,
 				MPI_SUM,
 				PhastaIOActiveFiles[i]->local_comm );
 
@@ -1541,7 +1541,7 @@ void writeheader_(  const int* fileDescriptor,
 			DB_HEADER_SIZE;
 		MPI_Bcast( &(PhastaIOActiveFiles[i]->next_start_address),
 				1,
-				MPI_LONG_LONG_INT,
+				MPI_UNSIGNED_LONG_LONG,
 				PhastaIOActiveFiles[i]->local_numprocs-1,
 				PhastaIOActiveFiles[i]->local_comm );
 
